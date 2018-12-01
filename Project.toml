@@ -1,0 +1,10 @@
+name = "SGDBabysitter"
+uuid = "78601200-f59e-11e8-1ce6-b93073486f73"
+authors = ["JayCata <43505548+JayCata@users.noreply.github.com>"]
+version = "0.1.0"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
