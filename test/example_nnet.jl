@@ -23,33 +23,6 @@ w = randn(nParams,1)
 # Train with stochastic gradient
 include("sgdfunc.jl")
 maxIter = 10000
-<<<<<<< HEAD
-j=1
-checks=[]
-valid=[]
-stepSize = 1e-4
-W= randn(nParams,1)
-
-for t in 1:maxIter
-	global W, j
-	# The stochastic gradient update:
-	i = rand(1:n,5)
-	f,g = NeuralNet_backprop(W, xtrain[i,:], ytrain[i], nHidden)
-	W = W - stepSize*g
-
-	# Every few iterations, plot the data/model:
-	if (mod(t-1,round(maxIter/50)) == 0)
-		print("Training iteration = $(t-1)",)
-
-		yhat = NeuralNet_predict(W,[ones(size(xvalid,1)) xvalid],nHidden)
-
-		push!(valid,sum((yhat-yvalid).^2)/length(yvalid))
-		push!(checks,j)
-		j=j+1
-	end
-end
-plot(checks,valid)
-=======
 print(maxIter)
 foo, valid = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
 maxIter, nHidden, nParams, xtrain, ytrain, xvalid, yvalid)
