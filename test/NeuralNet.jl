@@ -39,14 +39,14 @@ function NeuralNet_backprop(bigW,x,y,nHidden)
 	w = bigW[ind+1:end]
 
 	#### Define activation function and its derivative
-	h(z) = (exp.(2 .* z).-1).\(exp.(2 .* z).+1)
+	h(z) = (tanh.(z))
 	dh(z) = (sech.(z)).^2
 
 
 	#### Forward propagation
 	z = fill([],nLayers)
-	print(size(W1),size(transpose(x)))
-	z[1] = [W1*transpose(x)]
+	
+	z[1] = W1*x
 	for layer in 2:nLayers
 		z[layer] = Wm[layer-1]*h(z[layer-1])
 	end
