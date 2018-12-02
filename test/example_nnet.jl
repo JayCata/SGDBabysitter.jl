@@ -53,4 +53,3 @@ maxIter, nHidden, nParams, xtrain, ytrain, xvalid, yvalid)
 # 	end
 # end
 # plot(checks,valid)
->>>>>>> b485e0dce645860d04508fc79c15a02b809ebde2
