@@ -6,6 +6,10 @@ function ComputeValid(predict_func::Function, W, xvalid, yvalid, valid)
     # push!(checks,j)
 end
 
+function BS_Select(val_array)
+    return
+end
+
 function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidden,
                         nParams, xtrain, ytrain, xvalid, yvalid )
     n = size(xtrain,1)
