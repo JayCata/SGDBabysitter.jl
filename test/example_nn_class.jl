@@ -13,25 +13,25 @@ yvalid=read(data,"t_valid")
 n = size(xtrain,1)
 xtrain = [ones(n,1) xtrain]
 d = size(xtrain,2)
-
+k=length(unique(ytrain))
 # Choose network structure and randomly initialize weights
-include("NeuralNet.jl")
+include("NeuralNetclass.jl")
 nHidden = [3]
-nParams = NeuralNet_nParams(d,nHidden)
-w = randn(nParams,1)
-
+nParams = NeuralNet_nParams_class(d,nHidden,k)
+W = randn(nParams,1)
+f,g = NeuralNet_backprop_class(W, xtrain[1,:], ytrain[1], nHidden,k)
 # Train with stochastic gradient
 maxIter = 10000
 j=1
 checks=[]
 valid=[]
 stepSize = 1e-4
-W= randn(nParams,1)
+
 
 for t in 1:maxIter
 	global W, j
 	# The stochastic gradient update:
-	i = rand(1:n,5)
+	i = rand(1:n,2)
 	f,g = NeuralNet_backprop(W, xtrain[i,:], ytrain[i], nHidden)
 	W = W - stepSize*g
 

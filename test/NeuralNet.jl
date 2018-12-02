@@ -20,7 +20,12 @@ end
 # for a single training example (x,y)
 # (x is assumed to be a column-vector)
 function NeuralNet_backprop(bigW,x,y,nHidden)
-	d = length(x)
+
+	if typeof(x)<:Array{Float64,1}
+		d=length(x)
+	else
+		n,d = size(x)
+	end
 	nLayers = length(nHidden)
 
 	#### Reshape 'bigW' into vectors/matrices
@@ -34,17 +39,19 @@ function NeuralNet_backprop(bigW,x,y,nHidden)
 	w = bigW[ind+1:end]
 
 	#### Define activation function and its derivative
-	h(z) = tanh.(z)
+	h(z) = (exp.(2 .* z).-1).\(exp.(2 .* z).+1)
 	dh(z) = (sech.(z)).^2
 
 
 	#### Forward propagation
 	z = fill([],nLayers)
-	z[1] = W1*x
+	print(size(W1),size(transpose(x)))
+	z[1] = [W1*transpose(x)]
 	for layer in 2:nLayers
 		z[layer] = Wm[layer-1]*h(z[layer-1])
 	end
-	yhat = w'*h(z[end])
+
+	yhat = transpose(w)*h(z[end])
 
 	r = yhat-y
 	f = (1/2)r^2

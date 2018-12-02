@@ -1,5 +1,5 @@
 # We use nHidden as a vector, containing the number of hidden units in each layer
-
+using DataFrames
 # Function that returns total number of parameters
 function NeuralNet_nParams_class(d,nHidden,k)
 
@@ -19,19 +19,21 @@ end
 # Compute squared error and gradient
 # for a single training example (x,y)
 # (x is assumed to be a column-vector)
-function NeuralNet_backprop_class(bigW,x,y,nHidden)
+function NeuralNet_backprop_class(bigW,x,y,nHidden,k)
 	d = length(x)
 	nLayers = length(nHidden)
 
 	#### Reshape 'bigW' into vectors/matrices
 	W1 = reshape(bigW[1:nHidden[1]*d],nHidden[1],d)
 	ind = nHidden[1]*d
-	Wm = Array{Any}(nLayers-1)
+	Wm = fill([],(nLayers-1))
 	for layer in 2:nLayers
 		Wm[layer-1] = reshape(bigW[ind+1:ind+nHidden[layer]*nHidden[layer-1]],nHidden[layer],nHidden[layer-1])
 		ind += nHidden[layer]*nHidden[layer-1]
 	end
-	w = bigW[ind+1:end]
+	w = reshape(bigW[ind+1:end],k,nHidden[nLayers])
+
+	### Bin y variables
 
 	#### Define activation function and its derivative
 	h(z) = tanh.(z)
@@ -39,15 +41,16 @@ function NeuralNet_backprop_class(bigW,x,y,nHidden)
 
 
 	#### Forward propagation
-	z = Array{Any}(nLayers)
+	z = fill([],(nLayers))
 	z[1] = W1*x
 	for layer in 2:nLayers
 		z[layer] = Wm[layer-1]*h(z[layer-1])
 	end
-	yhat = w'*h(z[end])
+	yhat,_ = findmax(w*h(z[end]))
+	yhat=yhat-1
 
-	r = yhat-y
-	f = (1/2)r^2
+
+	f,r = softmax(w,x,y,k)
 
 	#### Backpropagation
 	dr = r
@@ -56,7 +59,7 @@ function NeuralNet_backprop_class(bigW,x,y,nHidden)
 	# Output weights
 	Gout = err*h(z[end])
 
-	Gm = Array{Any}(nLayers-1)
+	Gm = fill([],(nLayers-1))
 	if nLayers > 1
 		# Last Layer of Hidden Weights
 		backprop = err*(dh(z[end]).*w)
@@ -73,6 +76,7 @@ function NeuralNet_backprop_class(bigW,x,y,nHidden)
 		G1 = backprop*x'
 	else
 		# Input weights
+		print(size(err),size(x'))
 		G1 = err*(dh(z[1]).*w)*x'
 	end
 
@@ -90,19 +94,20 @@ function NeuralNet_backprop_class(bigW,x,y,nHidden)
 end
 
 # Computes predictions for a set of examples X
-function NeuralNet_predict_class(bigW,Xhat,nHidden)
+
+function NeuralNet_predict_class(bigW,Xhat,nHidden,k)
 	(t,d) = size(Xhat)
 	nLayers = length(nHidden)
 
 	#### Reshape 'bigW' into vectors/matrices
 	W1 = reshape(bigW[1:nHidden[1]*d],nHidden[1],d)
 	ind = nHidden[1]*d
-	Wm = Array{Any}(nLayers-1)
+	Wm = fill([],(nLayers-1))
 	for layer in 2:nLayers
 		Wm[layer-1] = reshape(bigW[ind+1:ind+nHidden[layer]*nHidden[layer-1]],nHidden[layer],nHidden[layer-1])
 		ind += nHidden[layer]*nHidden[layer-1]
 	end
-	w = bigW[ind+1:end]
+	w = reshape(bigW[ind+1:end],k,nHidden[nLayers])
 
 	#### Define activation function and its derivative
 	h(z) = tanh.(z)
@@ -112,7 +117,7 @@ function NeuralNet_predict_class(bigW,Xhat,nHidden)
 	yhat = zeros(t,1)
 	for i in 1:t
 		# Forward propagation
-		z = Array{Any}(nLayers)
+		z = fill([],(nLayers))
 		z[1] = W1*Xhat[i,:]
 		for layer in 2:nLayers
 			z[layer] = Wm[layer-1]*h(z[layer-1])
@@ -120,4 +125,39 @@ function NeuralNet_predict_class(bigW,Xhat,nHidden)
 		yhat[i] = w'*h(z[end])
 	end
 	return yhat
+end
+
+function softmax(w,X,y,k)
+	d=length(X)
+
+	yunique=unique(y)
+	f=0.0
+	g=zeros(k,d)
+	for i in 1:n
+		print(yunique.==y[i])
+		for j in length(yunique)
+			if yunique[j]==y[i]
+				s=j
+			end
+		end
+		s=firstindex((yunique.==y[i]),1)
+		print(s)
+        wyi=transpose(w[s,:])
+        f+=log(sum(exp.((w*X[i,:]))))-wyi*X[i,:]
+
+        for r in 1:k
+            if r==s
+                indic=1.0
+            else
+                indic=0.0
+			end
+
+            for j in 1:d
+                g[r,j]+=X[i,j]*((exp.((transpose(w[r,:])*X[i,:]))/sum(exp.((w*X[i,:]))))-indic)
+	      	end
+	  	end
+	end
+
+
+    return f,g
 end
