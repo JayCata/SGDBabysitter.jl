@@ -31,9 +31,9 @@ function NeuralNet_backprop(bigW,x,y,nHidden)
 	#### Reshape 'bigW' into vectors/matrices
 	W1 = reshape(bigW[1:nHidden[1]*d],nHidden[1],d)
 	ind = nHidden[1]*d
-	Wm = fill([],(nLayers-1))
+	Wm = Matrix{Float64}[]
 	for layer in 2:nLayers
-		Wm[layer-1] = reshape(bigW[ind+1:ind+nHidden[layer]*nHidden[layer-1]],nHidden[layer],nHidden[layer-1])
+		push!(Wm, reshape(bigW[ind+1:ind+nHidden[layer]*nHidden[layer-1]],nHidden[layer],nHidden[layer-1]))
 		ind += nHidden[layer]*nHidden[layer-1]
 	end
 	w = bigW[ind+1:end]
@@ -45,7 +45,7 @@ function NeuralNet_backprop(bigW,x,y,nHidden)
 
 	#### Forward propagation
 	z = fill([],nLayers)
-	
+
 	z[1] = W1*x
 	for layer in 2:nLayers
 		z[layer] = Wm[layer-1]*h(z[layer-1])
@@ -63,18 +63,18 @@ function NeuralNet_backprop(bigW,x,y,nHidden)
 	# Output weights
 	Gout = err*h(z[end])
 
-	Gm = fill([],(nLayers-1))
+	Gm = Matrix{Float64}[]
 	if nLayers > 1
 		# Last Layer of Hidden Weights
 		backprop = err*(dh(z[end]).*w)
-		Gm[end] = backprop*h(z[end-1])'
+		push!(Gm,backprop*h(z[end-1])')
 
 		# Other Hidden Layers
 		for layer in nLayers-2:-1:1
 			backprop = (Wm[layer+1]'*backprop).*dh(z[layer+1])
-			Gm[layer] = backprop*h(z[layer])'
+			push!(Gm,backprop*h(z[layer])')
 		end
-
+		GM=reverse!(Gm)
 		# Input Weights
 		backprop = (Wm[1]'*backprop).*dh(z[1])
 		G1 = backprop*x'
@@ -104,9 +104,9 @@ function NeuralNet_predict(bigW,Xhat,nHidden)
 	#### Reshape 'bigW' into vectors/matrices
 	W1 = reshape(bigW[1:nHidden[1]*d],nHidden[1],d)
 	ind = nHidden[1]*d
-	Wm = fill([],(nLayers-1))
+	Wm = Matrix{Float64}[]
 	for layer in 2:nLayers
-		Wm[layer-1] = reshape(bigW[ind+1:ind+nHidden[layer]*nHidden[layer-1]],nHidden[layer],nHidden[layer-1])
+		push!(Wm, reshape(bigW[ind+1:ind+nHidden[layer]*nHidden[layer-1]],nHidden[layer],nHidden[layer-1]))
 		ind += nHidden[layer]*nHidden[layer-1]
 	end
 	w = bigW[ind+1:end]

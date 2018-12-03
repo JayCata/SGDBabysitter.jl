@@ -16,7 +16,7 @@ d = size(xtrain,2)
 
 # Choose network structure and randomly initialize weights
 include("NeuralNet.jl")
-nHidden = [3]
+nHidden = [3,3,4,3]
 nParams = NeuralNet_nParams(d,nHidden)
 w = randn(nParams,1)
 
