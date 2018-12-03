@@ -11,14 +11,14 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     a=alist[end]
     B=Blist[end]
     n,d=size(xtrain)
-    batch=1
+
     #Get Gradient Angle
-    i=rand(1:n)
-    j=rand(1:n)
+    i=rand(1:n,B)
+    j=rand(1:n,B)
     _,gi=gradcalc(W, xtrain[i,:],ytrain[i],nHidden)
     _,gj=gradcalc(W,xtrain[j,:],ytrain[j], nHidden)
     costheta=dot(gi,gj)/(norm(gi)*norm(gj))
-    theta=acos(costheta)
+    #theta=acos(costheta)
 
 
 
@@ -52,7 +52,7 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
 
     for t in 1:maxIter
 
-    	i = rand(1:n)
+    	i = rand(1:n,B)
     	f,g = gradcalc(W, xtrain[i,:], ytrain[i], nHidden)
     	W = W - a*g
         #Every few iterations, compute validation and append f,g,validation

@@ -44,40 +44,47 @@ function NeuralNet_backprop(bigW,x,y,nHidden)
 
 
 	#### Forward propagation
-	z = fill([],nLayers)
+	z = Matrix{Float64}[]
 
-	z[1] = W1*x
+	push!(z, x*W1')
+
 	for layer in 2:nLayers
-		z[layer] = Wm[layer-1]*h(z[layer-1])
+		push!(z, h(z[layer-1]*Wm[layer-1]'))
 	end
 
-	yhat = transpose(w)*h(z[end])
+	yhat = (h(z[end])*w)
 
 	r = yhat-y
-	f = (1/2)r^2
+	f = (1/2)r.^2
 
 	#### Backpropagation
 	dr = r
 	err = dr
 
 	# Output weights
-	Gout = err*h(z[end])
+	Gout = err'*h(z[end])
 
 	Gm = Matrix{Float64}[]
 	if nLayers > 1
 		# Last Layer of Hidden Weights
-		backprop = err*(dh(z[end]).*w)
-		push!(Gm,backprop*h(z[end-1])')
+		#print(size(err), size(dh(z[end])),size(w))
+		backprop = (err.*(dh(z[end]).*w'))
+		#print(size(backprop),size(h(z[end-1])))
+		push!(Gm,backprop'*h(z[end-1]))
 
 		# Other Hidden Layers
 		for layer in nLayers-2:-1:1
-			backprop = (Wm[layer+1]'*backprop).*dh(z[layer+1])
-			push!(Gm,backprop*h(z[layer])')
+			#print(size(Wm[layer+1]), size(backprop),size(dh(z[layer+1])))
+			backprop = (backprop*Wm[layer+1]).*dh(z[layer+1])
+			#print(size(backprop),size(h(z[layer])))
+			push!(Gm,backprop'*h(z[layer]))
 		end
 		GM=reverse!(Gm)
 		# Input Weights
-		backprop = (Wm[1]'*backprop).*dh(z[1])
-		G1 = backprop*x'
+		#print(size(Wm[1]), size(backprop),size(dh(z[1])))
+		backprop = (backprop*Wm[1]).*dh(z[1])
+		G1 = backprop'*x
+		#print(size(G1))
 	else
 		# Input weights
 		G1 = err*(dh(z[1]).*w)*x'
