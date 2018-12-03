@@ -23,7 +23,7 @@ w = randn(nParams,1)
 # Train with stochastic gradient
 include("sgdfunc.jl")
 maxIter = 10000
-print(maxIter)
+
 foo, valid = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
 maxIter, nHidden, nParams, xtrain, ytrain, xvalid, yvalid)
 
