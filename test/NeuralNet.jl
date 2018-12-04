@@ -23,6 +23,7 @@ function NeuralNet_backprop(bigW,x,y,nHidden)
 
 	if typeof(x)<:Array{Float64,1}
 		d=length(x)
+		n=1
 	else
 		n,d = size(x)
 	end
@@ -100,7 +101,7 @@ function NeuralNet_backprop(bigW,x,y,nHidden)
 	end
 	g[ind+1:end] = Gout
 
-	return (f,g)
+	return (f,g/n)
 end
 
 # Computes predictions for a set of examples X

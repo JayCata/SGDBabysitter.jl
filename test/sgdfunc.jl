@@ -44,7 +44,7 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
     alist=[]
     Blist=[]
     #placehold for initialization
-    B=1
+    B=100
     a = 1e-4
     push!(Blist,B)
     push!(alist,a)
