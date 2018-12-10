@@ -7,7 +7,7 @@ using Plots
 #Sample size and numbe rof ismulations
 n=100000
 numsim=10
-nHidden = [3,4,5,4,3]
+nHidden = [3,4,10,4,3]
 #list for keeping track of simulations
 βlist=[]
 βbiaslist=[]
@@ -26,8 +26,8 @@ X2=rand(normdist,n)
 ϵ1=rand(Normal(0,1),n)
 ϵ2=rand(Normal(0,1),n)
 #form dependent variables
-X3=X1-.5*X2+ϵ1
-y=X1+2*X2+3*X3+ϵ2
+X3=X1.^2+X2.^2+ϵ1
+y=2*X1-3*X2+4*X3+ϵ2
 
 
 #Check Consistency
@@ -40,7 +40,7 @@ indexl= [] #Contains list of indices for nonmissing data
 indexm=[] #Contains list of indices for missing data
 for i in 1:n
     k=rand(Binomial(1,.5))
-    if (1.3>y[i]>.1 || 1.4>ϵ2[i]>.4) && k==true #removal conditions
+    if (4>y[i]>-1 && 2>ϵ2[i]>-1) && k==true #removal conditions
         push!(indexm,i)
     else
         push!(indexl,i)
@@ -58,7 +58,7 @@ push!(βbiaslist,βbias)
 #Fill in Missing Values
 #Shuffle for randomness maybe not necesarry
 
-#Create training and vlaidation sets
+#Create training and validation sets
 numtrain=convert(Int,round(.7*length(indexl)))
 xtrain=hcat(X1[indexl[1:numtrain]],X2[indexl[1:numtrain]])
 x3train=(X3[indexl[1:numtrain]])
@@ -90,4 +90,5 @@ ynn=vcat(y[indexl],y[indexm])
 βnn=inv(Xnn'*Xnn)*Xnn'*ynn
 push!(βnnlist,βnn)
 end
-print(sum(βbiaslist)/numsim,sum(βlist)/numsim,sum(βnnlist)/numsim,sum(misslist)/numsim)
+print(sum(βbiaslist)/numsim,sum(βlist)/numsim,sum(βnnlist)/numsim,sum(misslist)/numsim, " ")
+print(sum(βbiaslist)/numsim-[2,-3,4],sum(βnnlist)/numsim-[2,-3,4] )
