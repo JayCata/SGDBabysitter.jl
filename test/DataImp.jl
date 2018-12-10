@@ -7,7 +7,7 @@ using Plots
 #Sample size and numbe rof ismulations
 n=100000
 numsim=10
-nHidden = [3,4,10,4,3]
+nHidden = [3,4,10,12,3,4,5,9,8,7,6,4,3]
 #list for keeping track of simulations
 βlist=[]
 βbiaslist=[]
@@ -40,7 +40,7 @@ indexl= [] #Contains list of indices for nonmissing data
 indexm=[] #Contains list of indices for missing data
 for i in 1:n
     k=rand(Binomial(1,.5))
-    if (4>y[i]>-1 && 2>ϵ2[i]>-1) && k==true #removal conditions
+    if (5>y[i]>-1 && 2>X3[i]>-1) && k==true #removal conditions
         push!(indexm,i)
     else
         push!(indexl,i)
@@ -91,4 +91,3 @@ ynn=vcat(y[indexl],y[indexm])
 push!(βnnlist,βnn)
 end
 print(sum(βbiaslist)/numsim,sum(βlist)/numsim,sum(βnnlist)/numsim,sum(misslist)/numsim, " ")
-print(sum(βbiaslist)/numsim-[2,-3,4],sum(βnnlist)/numsim-[2,-3,4] )
