@@ -2,7 +2,7 @@ using Distributions
 using Random
 using Plots
 #set parameters for data generation
-μ=1
+μ=0
 σ=1
 #Sample size and numbe rof ismulations
 n=100000
@@ -24,7 +24,7 @@ normdist=Normal(μ,σ)
 X1=rand(normdist,n)
 X2=rand(normdist,n)
 ϵ1=rand(Normal(0,1),n)
-ϵ2=rand(Normal(0,1),n)
+ϵ2=rand(Normal(0,10),n)
 #form dependent variables
 X3=X1.^2+X2.^2+ϵ1
 y=2*X1-3*X2+4*X3+ϵ2
@@ -40,7 +40,7 @@ indexl= [] #Contains list of indices for nonmissing data
 indexm=[] #Contains list of indices for missing data
 for i in 1:n
     k=rand(Binomial(1,.5))
-    if (5>y[i]>-1 && 2>X3[i]>-1) && k==true #removal conditions
+    if (y[i]>1 && ϵ2[i]<0) && k==true #removal conditions
         push!(indexm,i)
     else
         push!(indexl,i)
@@ -50,9 +50,9 @@ end
 #Number of missing
 push!(misslist,n-length(indexl))
 #Show Bias
-X=hcat(X1[indexl],X2[indexl],X3[indexl])
+Xmiss=hcat(X1[indexl],X2[indexl],X3[indexl])
 ymiss=y[indexl]
-βbias=inv(X'*X)*X'*ymiss
+βbias=inv(Xmiss'*Xmiss)*Xmiss'*ymiss
 push!(βbiaslist,βbias)
 
 #Fill in Missing Values

@@ -43,12 +43,15 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
     flist=[]
     alist=[]
     Blist=[]
+
     #placehold for initialization
     B=100
     a = 1e-4
     push!(Blist,B)
     push!(alist,a)
     W= randn(nParams,1)
+    wbest=zeros(nParams)
+    vallow=Inf
 
     for t in 1:maxIter
 
@@ -61,6 +64,9 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
               # print("Training iteration = $(t-1) ")
               push!(flist,f)
               ComputeValid(nn_predict, W, xvalid, yvalid, valid)
+              if valid[end]<vallow
+                  wbest=W
+              end
           end
         if (mod(t-1,round(maxIter/50)) == 0)
             a,B=BS_Select(validation_array=valid,f_array=flist, gradcalc=gradcalc,xtrain=xtrain,ytrain=ytrain,W=W,nHidden=nHidden, alist=alist, Blist=Blist)
@@ -70,5 +76,5 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
 
     display(plot(1:length(valid), valid))
 
-    return W, valid
+    return wbest, valid
 end
