@@ -1,4 +1,5 @@
 using LinearAlgebra
+using Plots
 function VanillaSGD(gradcalc::Function, nn_predict::Function, maxIter, nHidden,
                         nParams, xtrain, ytrain, xvalid, yvalid,a=.0001, B=1)
     print("Vanilla SGD Running...")
