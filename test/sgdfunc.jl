@@ -1,7 +1,7 @@
 using LinearAlgebra
 function VanillaSGD(gradcalc::Function, nn_predict::Function, maxIter, nHidden,
                         nParams, xtrain, ytrain, xvalid, yvalid,a=.0001, B=1)
-    print("Vanilla SGD Running...")                        
+    print("Vanilla SGD Running...")
     n = size(xtrain,1)
     W= randn(nParams,1)
     flist=[]
@@ -135,3 +135,7 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     return a,B
 end
 #Compute Validation-------------------------------------------------------------
+function ComputeValid(predict_func::Function, W, xvalid, yvalid, valid)
+    yhat = predict_func(W,[ones(size(xvalid,1)) xvalid],nHidden)
+    push!(valid,sum((yhat-yvalid).^2)/length(yvalid))
+ end
