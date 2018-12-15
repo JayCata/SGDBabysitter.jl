@@ -1,5 +1,6 @@
 using LinearAlgebra
 using Plots
+using Distributions
 function VanillaSGD(gradcalc::Function, nn_predict::Function, maxIter, nHidden,
                         nParams, xtrain, ytrain, xvalid, yvalid,a=.0001, B=1)
     print("Vanilla SGD Running...")
@@ -79,7 +80,7 @@ function BS_initialize(gradcalc::Function, nn_predict::Function, maxIter, nHidde
 switch=1
 n = size(xtrain,1)
 B=5
-a=.999999999
+a=rand(Uniform(.95,.9999999))
 j=1
 while switch==1 && j<10
     W= randn(nParams,1)
@@ -95,7 +96,7 @@ end
 if validlist[end]<(4/6)*validlist[1] && flist[end]<(4/5)flist[1]
     switch=0
 else
-    a=(6/10)*a
+    a=rand(Uniform(.5,.75))*a
     print("Initializing... ")
     j+=1
 end
