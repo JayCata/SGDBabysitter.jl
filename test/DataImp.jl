@@ -94,7 +94,7 @@ push!(βnnvanlist,βnnvan)
 
 #Run neural network to get weights with SGDbabysitter
 w, valid = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
-maxIter, nHidden, nParams, xtrain, x3train, xvalid, x3valid,true)
+maxIter, nHidden, nParams, xtrain, x3train, xvalid, x3valid,500)
 
 #predict on missing data
 X3nnbabysit=NeuralNet_predict(w,hcat(ones(length(indexm)),X1[indexm],X2[indexm]),nHidden)

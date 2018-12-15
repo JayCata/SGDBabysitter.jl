@@ -30,8 +30,8 @@ function VanillaSGD(gradcalc::Function, nn_predict::Function, maxIter, nHidden,
 end
 
 function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidden,
-                        nParams, xtrain, ytrain, xvalid, yvalid, dyn=true)
-    @assert(dyn == true || dyn==false)
+                        nParams, xtrain, ytrain, xvalid, yvalid, maxbatch=500)
+
     n = size(xtrain,1)
     valid=[]
     flist=[]
@@ -61,8 +61,8 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
                   wbest=W
               end
           end
-        if (mod(t-1,round(maxIter/50)) == 0) && dyn==1
-            a,B=BS_Select(validation_array=valid,f_array=flist, gradcalc=gradcalc,xtrain=xtrain,ytrain=ytrain,W=W,nHidden=nHidden, alist=alist, Blist=Blist)
+        if (mod(t-1,round(maxIter/50)) == 0)
+            a,B=BS_Select(validation_array=valid,f_array=flist, gradcalc=gradcalc,xtrain=xtrain,ytrain=ytrain,W=W,nHidden=nHidden, alist=alist, Blist=Blist,maxbatch=maxbatch)
 
           end
     end
@@ -104,7 +104,7 @@ end
 return a,B
 end
 #Selection Function-------------------------------------------------------------
-function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W,nHidden, alist, Blist)
+function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W,nHidden, alist, Blist, maxbatch)
     #Get most recent step and batch sizes
     a=alist[end]
     B=Blist[end]
@@ -116,8 +116,11 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     _,gi=gradcalc(W, xtrain[i,:],ytrain[i],nHidden)
     _,gj=gradcalc(W,xtrain[j,:],ytrain[j], nHidden)
     costheta=dot(gi,gj)/(norm(gi)*norm(gj))
-    #theta=acos(costheta)
-
+    if costheta>0
+    theta=acos(costheta-.001)
+    else
+    theta=acos(costheta+.001)
+    end
 
 
     #case 1 alpha decreases based on validation error
@@ -131,9 +134,15 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
         a=(3/4)*a
     end
 
+    #case 3 batchsize as a function of theta
+    if exp(-1/(pi-theta))==NaN
+        B=maxbatch
+    else
+    B=convert(Int64,round(maxbatch*(1/(1+5*exp(-1/(pi-theta))))))
+    end
     push!(alist,a)
     push!(Blist,B)
-    print(a," ")
+    print("Step Size: ", a," ","Batch Size: " B)
     return a,B
 end
 #Compute Validation-------------------------------------------------------------
