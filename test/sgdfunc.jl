@@ -138,11 +138,11 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     if exp(-1/(pi-theta))==NaN
         B=maxbatch
     else
-    B=convert(Int64,round(maxbatch*(1/(1+5*exp(-1/(pi-theta))))))
+    B=convert(Int64,round(maxbatch*(1/(1+exp(-1/(pi-theta))))))
     end
     push!(alist,a)
     push!(Blist,B)
-    print("Step Size: ", a," ","Batch Size: " B)
+    print("Step Size: ", a," ","Batch Size: ",B)
     return a,B
 end
 #Compute Validation-------------------------------------------------------------
