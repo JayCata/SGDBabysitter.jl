@@ -142,7 +142,7 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     end
     push!(alist,a)
     push!(Blist,B)
-    print("Step Size: ", a," ","Batch Size: " B)
+    print("Step Size: ", a," ","Batch Size: ", B)
     return a,B
 end
 #Compute Validation-------------------------------------------------------------
