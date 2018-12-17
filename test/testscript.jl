@@ -16,6 +16,7 @@ d = size(xtrain,2)
 # Choose network structure and randomly initialize weights
 include("NeuralNet.jl")
 nHidden = [3,3,4,3]
+# nHidden = [5,5,5,5]
 nParams = NeuralNet_nParams(d,nHidden)
 w = randn(nParams,1)
 
@@ -51,5 +52,5 @@ maxIter = 10000
 wbSGDB, validSGDB = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
 maxIter, nHidden, nParams, xtrain, ytrain, xvalid, yvalid)
 
-# wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,
-#                             nParams, xtrain, ytrain, xvalid, yvalid, 0.0001, 20)
+wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,
+                            nParams, xtrain, ytrain, xvalid, yvalid, 0.0001, 20)

@@ -27,3 +27,10 @@ function abc()
     end
     print(x)
 end
+
+#---------------
+medyhat= NeuralNet_predict(wbSGDB,[ones(size(xvalid,1)) xvalid],nHidden)
+medyhat_u = length(unique(medyhat))
+
+medyhatv = NeuralNet_predict(bestw,[ones(size(xvalid,1)) xvalid],nHidden)
+medyhatv_u = length(unique(medyhatv))

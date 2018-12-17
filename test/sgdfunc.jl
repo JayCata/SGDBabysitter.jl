@@ -80,31 +80,31 @@ function BS_initialize(gradcalc::Function, nn_predict::Function, maxIter, nHidde
 switch=1
 n = size(xtrain,1)
 B=5
-a=rand(Uniform(.095,.09999999))
+a=rand(Uniform(.95,.9999999))
 j=1
-W_old= randn(nParams,1)
+W_init = randn(nParams,1)
+W = zeros(nParams,1)
 while switch==1 && j<10
-    W=W_old
+    W=W_init
     flist=[]
     validlist=[]
-for t in 1:10
-    i = rand(1:n,B)
-    f,g = gradcalc(W, xtrain[i,:], ytrain[i], nHidden)
-    W = W - a*g
-    push!(flist,f)
-    ComputeValid(nn_predict, W, xvalid, yvalid, validlist)
+    for t in 1:10
+        i = rand(1:n,B)
+        f,g = gradcalc(W, xtrain[i,:], ytrain[i], nHidden)
+        W = W - a*g
+        push!(flist,f)
+        ComputeValid(nn_predict, W, xvalid, yvalid, validlist)
+    end
+    # if validlist[end]<(4/6)*validlist[1] && flist[end]<(4/5)flist[1]
+    if validlist[end]<(4/5)*validlist[1] && flist[end]<(4/5)*flist[1]
+        switch=0
+    else
+        a=rand(Uniform(.5,.75))*a
+        print("Initializing... ")
+        j+=1
+    end
 end
-# if validlist[end]<(4/6)*validlist[1] && flist[end]<(4/5)flist[1]
-if validlist[end]<(4/5)*validlist[1] && flist[end]<(4/5)*flist[1]
-
-    switch=0
-else
-    a=rand(Uniform(.5,.75))*a
-    print("Initializing... ")
-    j+=1
-end
-end
-return a,B, W_old
+return a,B,W
 end
 
 #Selection Function-------------------------------------------------------------
@@ -151,14 +151,17 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     # if length(validation_array) >= 4 && (validation_array[end-4] < validation_array[end]||validation_array[end-3] < validation_array[end]) && (validation_array[end-2]<validation_array[end])
     #     a=(3/4)*a
     # end
-    
-    if length(validation_array) >= 4 && (validation_array[end-4] < validation_array[end]||validation_array[end-3] < validation_array[end]) && (validation_array[end-2]<validation_array[end])  && (triedDec==false)
+
+    if length(validation_array) >= 4 && (validation_array[end-3] < validation_array[end]||validation_array[end-3] < validation_array[end]) && (validation_array[end-1]<validation_array[end])  && (triedDec==false)
         a=(3/4)*a
+        # a = (1/2)*a
         global triedDec
         triedDec = true
-    elseif length(validation_array) >= 4 && (validation_array[end-4] < validation_array[end]||validation_array[end-3] < validation_array[end]) && (validation_array[end-2]<validation_array[end])  && (triedDec==true)
+    elseif length(validation_array) >= 4 && (validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end])  && (triedDec==true)
         #go back to best w
         W = wbest
+        a = (3/4)*a
+        # a = (1/2)*a
         # a = aBest
         # B = BBest
         #reset flag
@@ -186,10 +189,12 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     if exp(-1/(pi-theta))==NaN
         B=maxbatch
     else
-    B=convert(Int64,round(maxbatch*(1/(1+5*exp(-1/(pi-theta))))))
+        B=convert(Int64,round(maxbatch*(1/(1+5*exp(-1/(pi-theta))))))
     end
     push!(alist,a)
     push!(Blist,B)
+    # B = 20
+    # a = 0.0001
     print("Step Size: ", a," ","Batch Size: ", B)
     return a,B,W
 end
