@@ -1,82 +1,79 @@
-\documentclass{article}
+\documentclass{article} 
 
-% if you need to pass options to natbib, use, e.g.:
-%     \PassOptionsToPackage{numbers, compress}{natbib}
-% before loading neurips_2018
+% if you need to pass options to natbib, use, e.g.: 
+% 	\PassOptionsToPackage{numbers, compress}{natbib} 
+% before loading neurips_2018 
 
-% ready for submission
-% \usepackage{neurips_2018}
+% ready for submission 
+% \usepackage{neurips_2018} 
 
-% to compile a preprint version, e.g., for submission to arXiv, add add the
-% [preprint] option:
-%     \usepackage[preprint]{neurips_2018}
+% to compile a preprint version, e.g., for submission to arXiv, add add the 
+% [preprint] option: 
+% 	\usepackage[preprint]{neurips_2018} 
 
-% to compile a camera-ready version, add the [final] option, e.g.:
-     \usepackage[final]{nips_2018}
+% to compile a camera-ready version, add the [final] option, e.g.: \usepackage[final]{nips_2018}
+ 
+% to avoid loading the natbib package, add option nonatbib: 
+% 	\usepackage[nonatbib]{neurips_2018} 
 
-% to avoid loading the natbib package, add option nonatbib:
-%     \usepackage[nonatbib]{neurips_2018}
+\usepackage[utf8]{inputenc} % allow utf-8 input 
+\usepackage[T1]{fontenc} % use 8-bit T1 fonts 
+\usepackage{hyperref} % hyperlinks 
+\usepackage{url} % simple URL typesetting 
+\usepackage{booktabs} % professional-quality tables 
+\usepackage{amsfonts} % blackboard math symbols 
+\usepackage{nicefrac} % compact symbols for 1/2, etc. 
+\usepackage{microtype} % microtypography
+\usepackage{lmodern}
+ 
+\title{SGDBabysitter} 
 
-\usepackage[utf8]{inputenc} % allow utf-8 input
-\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
-\usepackage{hyperref}       % hyperlinks
-\usepackage{url}            % simple URL typesetting
-\usepackage{booktabs}       % professional-quality tables
-\usepackage{amsfonts}       % blackboard math symbols
-\usepackage{nicefrac}       % compact symbols for 1/2, etc.
-\usepackage{microtype}      % microtypography
-
-\title{SGDBabysitter}
-
-% The \author macro works with any number of authors. There are two commands
-% used to separate the names and addresses of multiple authors: \And and \AND.
-%
-% Using \And between authors leaves it to LaTeX to determine where to break the
-% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
-% authors names on the first line, and the last on the second line, try using
+% The \author macro works with any number of authors. There are two commands 
+% used to separate the names and addresses of multiple authors: \And and \AND. 
+% 
+% Using \And between authors leaves it to LaTeX to determine where to break the 
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4 
+% authors names on the first line, and the last on the second line, try using 
 % \AND instead of \And before the third author name.
 
-\author{Joshua Catalano -- 28675650
-  % examples of more authors
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \AND
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
+\author{
+	\begin{tabular}{rl}
+			Joshua Catalano &|  28675650 \\
+		Puranjay Rohan Gulati &|  96579164
+	\end{tabular}
+% examples of more authors % \And % Coauthor \\ % Affiliation \\ % Address \\ % \texttt{email} \\ % \AND % Coauthor \\ % Affiliation \\ % Address \\ % \texttt{email} \\ % \And % Coauthor \\ % Affiliation \\ % Address \\ % \texttt{email} \\ % \And % Coauthor \\ % Affiliation \\ % Address \\ % \texttt{email} \\ 
 }
 
-\begin{document}
-%\nipsfinalcopy is no longer used
+ \begin{document} 
+ %\nipsfinalcopy is no longer used 
+ \maketitle 
+ 
+ \begin{abstract} 
+ 	We created a stochastic gradient descent algorithm that dynamically adjusts learning rate and batch size. To make decisions, the algorithm considers the change in validation error over time and the angle between gradients. We're hoping to exploit our knowledge of the behavior of stochastic gradient descent in order to create an implementation that attains lower validation errors. We consider our algorithm a success if it can attain a lower validation error than the best constant learning rate or learning rates determined by a predetermined series of numbers (e.g. $\frac{1}{t}$ or $\frac{1}{\sqrt{t}}$). In order to test our algorithm, we use it to fit a basic neural network to various real and generated datasets. 
+\end{abstract} 
 
-\maketitle
-
-\begin{abstract}
-  We created a stochastic gradient descent algorithm that dynamically adjusts learning rate and batch size. To make decisions, the algorithm considers the change in validation error over time and the angle between gradients.  We're hoping to exploit our knowledge of the behavior of stochastic gradient descent in order to create an implementation that attains lower validation errors. We consider our algorithm a success if it can attain a lower validation error than the best constant learning rate or learning rates determined by a predetermined series of numbers (e.g. $\frac{1}{t}$ or $\frac{1}{\sqrt{t}}$).  In order to test our algorithm, we use it to fit a basic neural network to various real and generated datasets.   
-\end{abstract}
-
-\section*{Introduction}
-As we learned in class, Stochastic Gradient Descent (SGD) is a popular optimization algorithm in Machine Learning that allows for fitting various machine learning models to massive datasets. It can be used to fit logistic regression, ordinary least squares, neural networks, and more. While SGD is less computationally costly than gradient descent, it demonstrates unsavory behavior due to the fact that it assesses the gradient using a random subsample of the data. We constructed our own unique implementation that accounts for this strange behavior in the hopes of improving the performance of models that are fit using SGD.
+\section*{Introduction} As we learned in class, Stochastic Gradient Descent (SGD) is a popular optimization algorithm in Machine Learning that allows for fitting various machine learning models to massive datasets. It can be used to fit logistic regression, ordinary least squares, neural networks, and more. While SGD is less computationally costly than gradient descent, it demonstrates unsavory behavior due to the fact that it assesses the gradient using a random subsample of the data. We constructed our own unique implementation that accounts for this strange behavior in the hopes of improving the performance of models that are fit using SGD. 
 \par Making a more accurate implementation of stochastic gradient descent is important because it could be used to fit more accurate machine learning models. Since many academic disciplines and the private sector use SGD to fit machine learning models, a more accurate implementation could improve the performance of prediction in all types of applications. 
+\par Other advantages: Does not require `babysitting' to obtain low validation errors - resulting in faster computation and less investment of time from the end user. 
 
-\section*{Theory}
-\par In order to create this algorithm, we utilized the concepts we learned in class. In this section, we will discuss our understanding of the theory.
-\par When far away from the minimizer, stochastic gradient descent, with an appropriate learning rate, moves us closer to the minimizer with high probability. As it gets closer to the minimizer, the angles between the gradients assessed at all the different values of X become wider and wider. This increases the probability that the next iteration will actually move away from the minimizer. In class, we called this phenomenon the "ball of confusion."
-\par The size of this ball of confusion is a function of the learning rate. The smaller the learning rate, the smaller the radius of this ball. Starting with a very tiny learning rate, however, can make the algorithm take far too long. On the other hand, having too large of a learning rate can give you divergent results. So ideally, the learning rate would be large in the beginning but just small enough so that the algorithm doesn't diverge. Then as we approach the minimizer, this learning rate should decay so that we can get closer to the minimizer within the ball of confusion.
-\par When selecting batch size, the trade off is between lower computation costs and a more accurate estimate of the gradient. When far away from the minimizer, a small batch size is ideal because the angle between the gradients evaluated at an of the X values should be relatively small, so taking an average of gradients is less beneficial but still increases computation cost. As we approach the minimizer, the angles between these gradients increase, and averaging will be more beneficial as more gradients are likely to be pointing in the wrong direction.    
+\section*{Related Work}
+Related work (3+ papers working on similar stuff) goes here.
+
+\section*{SGDBabysitter} 
+
+\subsection*{Theory}
+\par In order to create this algorithm, we utilized the concepts we learned in class. In this section, we will discuss our understanding of the theory. 
+\par When far away from the minimizer, stochastic gradient descent, with an appropriate learning rate, moves us closer to the minimizer with high probability. As it gets closer to the minimizer, the angles between the gradients assessed at all the different values of X become wider and wider. This increases the probability that the next iteration will actually move away from the minimizer. In class, we called this phenomenon the ``ball of confusion." 
+\par The size of this ball of confusion is directly proportional to the learning rate. Starting with a very tiny learning rate, however, can make the algorithm take far too long to converge. On the other hand, having too large of a learning rate can give you divergent results. Thus, ideally the learning rate would be large in the beginning but just small enough so that the algorithm doesn't diverge. Then as we approach the minimizer, this learning rate should decay so that we can get closer to the minimizer within the ball of confusion. 
+\par When selecting batch size, the trade off is between lower computation costs and a more accurate estimate of the gradient. When far away from the minimizer, a small batch size is ideal because the angle between the gradients evaluated at an of the X values should be relatively small, so taking an average of gradients is less beneficial but still increases computation cost. As we approach the minimizer, the angles between these gradients increase, and averaging will be more beneficial as more gradients are likely to be pointing in the wrong direction. 
+
+\section*{Algorithm}
+Describe: modifying NN code, building algorithm, logic. 
+
+\section*{Analysis}
+
+To test our algorithm, we're going to be comparing it to a manually optimized vanilla version of SGD on various datasets. 
+
+\section*{Discussion}
 
 \end{document}
