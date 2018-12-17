@@ -51,5 +51,5 @@ maxIter = 10000
 wbSGDB, validSGDB = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
 maxIter, nHidden, nParams, xtrain, ytrain, xvalid, yvalid)
 
-wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,
-                            nParams, xtrain, ytrain, xvalid, yvalid, 0.0001, 20)
+# wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,
+#                             nParams, xtrain, ytrain, xvalid, yvalid, 0.0001, 20)
