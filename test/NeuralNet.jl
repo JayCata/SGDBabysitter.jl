@@ -88,7 +88,7 @@ function NeuralNet_backprop(bigW,x,y,nHidden)
 		#print(size(G1))
 	else
 		# Input weights
-		G1 = err*(dh(z[1]).*w)*x'
+		G1 = x'*(err.*(dh(z[1]).*w'))
 	end
 
 	#### Put gradients into vector

@@ -18,16 +18,16 @@ function VanillaSGD(gradcalc::Function, nn_predict::Function, maxIter, nHidden,n
     	W = W - a*g
 
         if (mod(t-1,round(maxIter/100)) == 0)
-            # print("Training iteration = $(t-1) ")
             push!(flist,f)
             ComputeValid(nn_predict, W, xvalid, yvalid, valid)
             if valid[end]<vallow
                 wbest=W
+                vallow=valid[end]
             end
         end
     end
     display(plot(1:length(valid), valid))
-    return wbest, valid
+    return wbest, vallow
 end
 
 function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidden,nParams, xtrain, ytrain, xvalid, yvalid, maxbatch=500)
@@ -42,11 +42,9 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
                             nParams, xtrain, ytrain, xvalid, yvalid)
     push!(Blist,B)
     push!(alist,a)
-    # W= randn(nParams,1)
     wbest=zeros(nParams)
-    aBest, BBest  = 0, 0
     vallow=Inf
-
+    triedDec=false
     for t in 1:maxIter
 
         idxshuffle = shuffle(1:n)
@@ -58,26 +56,22 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
 
         #Every few iterations, compute validation and append f,g,validation
         if (mod(t-1,round(maxIter/200)) == 0)
-              # print("Training iteration = $(t-1) ")
               push!(flist,f)
               ComputeValid(nn_predict, W, xvalid, yvalid, valid)
               if valid[end]<vallow
                   wbest=W
-                  aBest = a
-                  BBest = B
-                  # global vallow
                   vallow = valid[end]
               end
         end
         if (mod(t-1,round(maxIter/100)) == 0)
-            a,B,W=BS_Select(validation_array=valid,f_array=flist, gradcalc=gradcalc,xtrain=xtrain,ytrain=ytrain,W=W,nHidden=nHidden, alist=alist, Blist=Blist,maxbatch=maxbatch, wbest=wbest, aBest=aBest, BBest=BBest, maxIter=maxIter)
+            a,B,W,triedDec=BS_Select(validation_array=valid,f_array=flist, gradcalc=gradcalc,xtrain=xtrain,ytrain=ytrain,W=W,nHidden=nHidden, alist=alist, Blist=Blist,maxbatch=maxbatch, wbest=wbest,  maxIter=maxIter,triedDec=triedDec)
 
           end
     end
 
     display(plot(1:length(valid), valid))
 
-    return wbest, valid
+    return wbest, vallow
 end
 
 #INITIALIZATION FUNCTION--------------------------------------------------------
@@ -100,7 +94,6 @@ while switch==1 && j<10
         push!(flist,f)
         ComputeValid(nn_predict, W, xvalid, yvalid, validlist)
     end
-    # if validlist[end]<(4/6)*validlist[1] && flist[end]<(4/5)flist[1]
     if validlist[end]<(4/5)*validlist[1] && flist[end]<(4/5)*flist[1]
         switch=0
     else
@@ -113,10 +106,9 @@ return a,B,W
 end
 
 #Selection Function-------------------------------------------------------------
-triedDec = false
-ctr = 0
+
 # bestyet = 1
-function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W,nHidden, alist, Blist, maxbatch, wbest, aBest, BBest, maxIter)
+function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W,nHidden, alist, Blist, maxbatch, wbest,  maxIter,triedDec)
     global ctr
     #Get most recent step and batch sizes
     a=alist[end]
@@ -140,21 +132,14 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
 
     #Case 1: alpha decrease if validation error does not
 
-    if length(validation_array) >= 4 && ((validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end])) && ((mean(validation_array[end-3:end-1]) <= 1.05*validation_array[end]) && (mean(validation_array[end-3:end-1]) >= 0.95*validation_array[end]))
+    if length(validation_array) >= 4 && ((validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end])) || length(validation_array) >= 4 && ((mean(validation_array[end-3:end-1]) <= 1.05*validation_array[end]) && (mean(validation_array[end-3:end-1]) >= 0.95*validation_array[end]))
         if triedDec==false
             a=(3/4)*a
-            # a = (4/5)*a
-            global triedDec
             triedDec = true
         elseif triedDec==true
             #go back to best w
             W = wbest
-            # a = (3/4)*a
             a = (4/5)*a
-            # a = aBest
-            # B = BBest
-            #reset flag
-            global triedDec
             triedDec = false
         end
 
@@ -165,7 +150,7 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     # decLimit = 5 #round(maxIter/20)
     # threshold = 12 #round(maxIter/10)
     #
-    # if length(validation_array) >= 4 && ((validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end])) && ((mean(validation_array[end-3:end-1]) <= 1.05*validation_array[end]) && (mean(validation_array[end-3:end-1]) >= 0.95*validation_array[end]))
+    # if length(validation_array) >= 4 && ((validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end])) || ((mean(validation_array[end-3:end-1]) <= 1.05*validation_array[end]) && (mean(validation_array[end-3:end-1]) >= 0.95*validation_array[end]))
     #     if ctr <= decLimit
     #         a = (4/5)*a
     #         ctr += 1
@@ -183,25 +168,22 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
 
 
     #Case 2: alpha decreases based on validation error
-
     elseif length(validation_array) >= 4 && ((validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end]))
-        a_adjust = (1 - abs(validation_array[end-2] - validation_array[end])/validation_array[end-2])#^(1/2)#^2
+        a_adjust = (1 - abs(validation_array[end-2] - validation_array[end])/validation_array[end-2])
         a = a*a_adjust
         print("case 1")
     end
 
-    #case 4 batchsize as a function of theta
-    if exp(-1/(pi-theta))==NaN
+    #case 3 batchsize as a function of theta
+    if exp(-.5/(pi-theta))==NaN
         B=maxbatch
     else
-        B=convert(Int64,round(maxbatch*(1/(1+round(60*exp(-1/(pi-theta)),digits=10)))))
+        B=convert(Int64,round(maxbatch*(1/(1+round(exp(-.5/(pi-theta)),digits=5)))))
     end
     push!(alist,a)
     push!(Blist,B)
-    # B = 20
-    # a = 0.0001
-    print("Step Size: ", a," ","Batch Size: ", B)
-    return a,B,W
+    print("Step Size: ", a," ","Batch Size: ", B, " ")
+    return a,B,W,triedDec
 end
 
 #Compute Validation-------------------------------------------------------------

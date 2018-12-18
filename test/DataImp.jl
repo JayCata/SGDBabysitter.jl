@@ -6,13 +6,15 @@ using Plots
 σ=1
 #Sample size, number of simulations, number and size of hidden layers
 n=100000
-numsim=50
-nHidden = [6,15,20,15,6]
+numsim=5
+nHidden = [6,15,20]
 #list for keeping track of simulations
 βlist=[]
 βbiaslist=[]
 βnnbabysitlist=[]
 βnnvanlist=[]
+ValErrBS=[]
+ValErrVan=[]
 misslist=[]
 #Neural Net Parameters and commands
 maxIter = 10000
@@ -20,6 +22,7 @@ include("NeuralNet.jl")
 include("sgdfunc.jl")
 
 for j in 1:numsim
+
 #Draw random varaibles
 normdist=Normal(μ,σ)
 X1=rand(normdist,n)
@@ -80,10 +83,18 @@ nParams = NeuralNet_nParams(dtrain,nHidden)
 
 
 #Run neural network to get weights with Vanilla SGD
-w,valid=VanillaSGD(NeuralNet_backprop,NeuralNet_predict,maxIter,nHidden, nParams,xtrain,x3train,xvalid,x3valid, .0001,10)
-
+bestvanval=Inf
+wbestvan=randn(nParams)
+for α in [.9, .1, .01,.001,.0001,.00001]
+w,validvan=VanillaSGD(NeuralNet_backprop,NeuralNet_predict,maxIter,nHidden, nParams,xtrain,x3train,xvalid,x3valid, α ,10)
+if validvan < bestvanval
+wbestvan=w
+bestvanval=validvan
+end
+end
+push!(ValErrVan,bestvanval)
 #predict on missing data
-X3nnvan=NeuralNet_predict(w,hcat(ones(length(indexm)),X1[indexm],X2[indexm]),nHidden)
+X3nnvan=NeuralNet_predict(wbestvan,hcat(ones(length(indexm)),X1[indexm],X2[indexm]),nHidden)
 #form new X and y
 Xnnvan=vcat(hcat(X1[indexl],X2[indexl],X3[indexl]),hcat(X1[indexm],X2[indexm],X3nnvan))
 ynnvan=vcat(y[indexl],y[indexm])
@@ -93,9 +104,9 @@ ynnvan=vcat(y[indexl],y[indexm])
 push!(βnnvanlist,βnnvan)
 
 #Run neural network to get weights with SGDbabysitter
-w, valid = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
+w, validBB = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
 maxIter, nHidden, nParams, xtrain, x3train, xvalid, x3valid,500)
-
+push!(ValErrBS,validBB)
 #predict on missing data
 X3nnbabysit=NeuralNet_predict(w,hcat(ones(length(indexm)),X1[indexm],X2[indexm]),nHidden)
 #form new X and y
@@ -110,3 +121,4 @@ push!(βnnbabysitlist,βnnbabysit)
 end
 #Final report of all OLS estimates
 print("All Data Coefficients: ", sum(βlist)/numsim, " Coefficients with Missing Data: ", sum(βbiaslist)/numsim," Coefficients with NN Imputation (SGDBabysitter): ",sum(βnnbabysitlist)/numsim," Coefficients with NN Imputation (VanillaSGD): " ,sum(βnnvanlist)/numsim," Average Number of Missing Variables: ", sum(misslist)/numsim, " ")
+print("Average Validation Error SGDBabysitter: ", sum(ValErrBS)/numsim, " Average Validation Error VanillaSGD ", sum(ValErrVan)/numsim, " ")
