@@ -6,7 +6,7 @@ using Plots
 σ=1
 #Sample size, number of simulations, number and size of hidden layers
 n=100000
-numsim=10
+numsim=50
 nHidden = [6,15,20,15,6]
 #list for keeping track of simulations
 βlist=[]
@@ -27,7 +27,7 @@ X2=rand(normdist,n)
 ϵ1=rand(Normal(0,1),n)
 ϵ2=rand(Normal(0,10),n)
 #form dependent variables
-X3=X1.^2+X2.^2+ϵ1
+X3=X1+X2+ϵ1
 y=2*X1-3*X2+4*X3+ϵ2
 
 
