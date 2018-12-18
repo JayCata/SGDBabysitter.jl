@@ -22,7 +22,7 @@ d2 = size(xtrain,2)
 
 # Choose network structure and randomly initialize weights
 include("NeuralNet.jl")
-nHidden = [10,10,10,10]
+nHidden = [3,3,4,3]
 # nHidden = [5,5,5,5]
 nParams = NeuralNet_nParams(d2,nHidden)
 w = randn(nParams,1)
@@ -37,25 +37,25 @@ aTest = [0.1, 0.01, 0.001, 0.0001, 0.00001]
 BTest = [1, 5, 10, 20, 100] #200 500 1000
 # aa = [0.1, 0.01]
 # BB = [1, 5]
-
-bestvalid = Inf
-bestw = []
-bestparams = [0,0]
-for B in BTest
-    for a in aTest
-        global bestvalid, bestw, bestparams
-        wb, validerr = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden, nParams, xtrain, ytrain1, xvalid, yvalid1, a, B)
-        if (validerr[end]<bestvalid)
-            bestvalid=validerr[end]
-            bestw=wb
-            bestparams = [a,B]
-        end
-    end
-end
+#
+# bestvalid = Inf
+# bestw = []
+# bestparams2 = [0,0]
+# for B in BTest
+#     for a in aTest
+#         global bestvalid, bestw, bestparams2
+#         wb, validerr = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden, nParams, xtrain, ytrain1, xvalid, yvalid1, a, B)
+#         if (validerr[end]<bestvalid)
+#             bestvalid=validerr[end]
+#             bestw=wb
+#             bestparams2 = [a,B]
+#         end
+#     end
+# end
 
 #best hyperparams found to be [0.0001, 20] from naive possibilities
 
 wbSGDB, validSGDB = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
 maxIter, nHidden, nParams, xtrain, ytrain1, xvalid, yvalid1)
 
-wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,nParams, xtrain, ytrain1, xvalid, yvalid1, 0.0001, 20)
+# wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,nParams, xtrain, ytrain1, xvalid, yvalid1, bestparams2[1], bestparams2[2])
