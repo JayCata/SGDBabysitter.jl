@@ -26,10 +26,10 @@ maxIter = 10000
 
 #----Uncomment below for hyperparameter search:----#
 
-# aTest = [0.1, 0.01, 0.001, 0.0001, 0.00001]
-# BTest = [1, 5, 10, 20, 100] #200 500 1000
-# aa = [0.1, 0.01]
-# BB = [1, 5]
+aTest = [0.1, 0.01, 0.001, 0.0001, 0.00001]
+BTest = [1, 5, 10, 20, 100] #200 500 1000
+aa = [0.1, 0.01]
+BB = [1, 5]
 #
 # bestvalid = Inf
 # bestw = []
@@ -52,5 +52,5 @@ maxIter = 10000
 wbSGDB, validSGDB = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
 maxIter, nHidden, nParams, xtrain, ytrain, xvalid, yvalid)
 
-wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,
-                            nParams, xtrain, ytrain, xvalid, yvalid, 0.0001, 20)
+# wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,
+#                             nParams, xtrain, ytrain, xvalid, yvalid, bestparams[1], bestparams[2])
