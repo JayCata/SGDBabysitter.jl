@@ -178,7 +178,7 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     if exp(-.5/(pi-theta))==NaN
         B=maxbatch
     else
-        B=convert(Int64,round(maxbatch*(1/(1+round(exp(-.5/(pi-theta)),digits=5)))))
+        B=convert(Int64,round(maxbatch*(1/(1+round(exp(-.5/(pi-theta+.00001)),digits=5)))))
     end
     push!(alist,a)
     push!(Blist,B)

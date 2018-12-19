@@ -2,12 +2,13 @@ using Distributions
 using Random
 using Plots
 #set parameters for data generation
+
 μ=0
 σ=1
 #Sample size, number of simulations, number and size of hidden layers
 n=100000
-numsim=5
-nHidden = [6,15,20]
+numsim=100
+nHidden = [6,15,20,15,6]
 #list for keeping track of simulations
 βlist=[]
 βbiaslist=[]
@@ -44,7 +45,7 @@ indexl= [] #Contains list of indices for nonmissing data
 indexm=[] #Contains list of indices for missing data
 for i in 1:n
     k=rand(Binomial(1,.5))
-    if (y[i]>1 && ϵ2[i]<0) && k==true #removal conditions
+    if (y[i]>1 && ϵ2[i]<5) && k==true #removal conditions
         push!(indexm,i)
     else
         push!(indexl,i)
@@ -85,7 +86,7 @@ nParams = NeuralNet_nParams(dtrain,nHidden)
 #Run neural network to get weights with Vanilla SGD
 bestvanval=Inf
 wbestvan=randn(nParams)
-for α in [.9, .1, .01,.001,.0001,.00001]
+for α in [.1, .01,.001,.0001,.00001]
 w,validvan=VanillaSGD(NeuralNet_backprop,NeuralNet_predict,maxIter,nHidden, nParams,xtrain,x3train,xvalid,x3valid, α ,10)
 if validvan < bestvanval
 wbestvan=w
@@ -121,4 +122,4 @@ push!(βnnbabysitlist,βnnbabysit)
 end
 #Final report of all OLS estimates
 print("All Data Coefficients: ", sum(βlist)/numsim, " Coefficients with Missing Data: ", sum(βbiaslist)/numsim," Coefficients with NN Imputation (SGDBabysitter): ",sum(βnnbabysitlist)/numsim," Coefficients with NN Imputation (VanillaSGD): " ,sum(βnnvanlist)/numsim," Average Number of Missing Variables: ", sum(misslist)/numsim, " ")
-print("Average Validation Error SGDBabysitter: ", sum(ValErrBS)/numsim, " Average Validation Error VanillaSGD ", sum(ValErrVan)/numsim, " ")
+print("Average Validation Error SGDBabysitter: ", sum(ValErrBS)/numsim, " Average Validation Error VanillaSGD ", sum(ValErrVan)/numsim, " ", "Average Test Error SGDBabysitter: ", sum((X3nnbabysit-X3[indexm]).^2)/numsim, " Average Validation Error VanillaSGD ", sum((X3nnvan-X3[indexm]).^2)/numsim,)
