@@ -35,27 +35,27 @@ maxIter = 10000
 
 aTest = [0.1, 0.01, 0.001, 0.0001, 0.00001]
 BTest = [1, 5, 10, 20, 100] #200 500 1000
-# aa = [0.1, 0.01]
-# BB = [1, 5]
-#
-# bestvalid = Inf
-# bestw = []
-# bestparams2 = [0,0]
-# for B in BTest
-#     for a in aTest
-#         global bestvalid, bestw, bestparams2
-#         wb, validerr = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden, nParams, xtrain, ytrain1, xvalid, yvalid1, a, B)
-#         if (validerr[end]<bestvalid)
-#             bestvalid=validerr[end]
-#             bestw=wb
-#             bestparams2 = [a,B]
-#         end
-#     end
-# end
+aa = [0.1, 0.01]
+BB = [1, 5]
+
+bestvalid = Inf
+bestw = []
+bestparams2 = [0,0]
+for B in BTest
+    for a in aTest
+        global bestvalid, bestw, bestparams2
+        wb, validerr = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden, nParams, xtrain, ytrain1, xvalid, yvalid1, a, B)
+        if (validerr[end]<bestvalid)
+            bestvalid=validerr[end]
+            bestw=wb
+            bestparams2 = [a,B]
+        end
+    end
+end
 
 #best hyperparams found to be [0.0001, 20] from naive possibilities
 
 wbSGDB, validSGDB = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
 maxIter, nHidden, nParams, xtrain, ytrain1, xvalid, yvalid1)
 
-# wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,nParams, xtrain, ytrain1, xvalid, yvalid1, bestparams2[1], bestparams2[2])
+wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,nParams, xtrain, ytrain1, xvalid, yvalid1, bestparams2[1], convert(Int64, bestparams2[2]))

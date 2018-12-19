@@ -55,7 +55,7 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
     	W = W - a*g
 
         #Every few iterations, compute validation and append f,g,validation
-        if (mod(t-1,round(maxIter/200)) == 0)
+        if (mod(t-1,round(maxIter/100)) == 0)
               push!(flist,f)
               ComputeValid(nn_predict, W, xvalid, yvalid, valid)
               if valid[end]<vallow
@@ -63,7 +63,7 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
                   vallow = valid[end]
               end
         end
-        if (mod(t-1,round(maxIter/100)) == 0)
+        if (mod(t-1,round(maxIter/50)) == 0)
             a,B,W,triedDec=BS_Select(validation_array=valid,f_array=flist, gradcalc=gradcalc,xtrain=xtrain,ytrain=ytrain,W=W,nHidden=nHidden, alist=alist, Blist=Blist,maxbatch=maxbatch, wbest=wbest,  maxIter=maxIter,triedDec=triedDec)
 
           end
