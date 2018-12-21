@@ -79,7 +79,7 @@ function BS_initialize(gradcalc::Function, nn_predict::Function, maxIter, nHidde
 switch=1
 n = size(xtrain,1)
 B=5
-a=rand(Uniform(.95,.9999999))
+a=rand(Uniform(.095,.09999999))
 j=1
 W_init = randn(nParams,1)
 W = zeros(nParams,1)
@@ -107,9 +107,12 @@ end
 
 #Selection Function-------------------------------------------------------------
 
-# bestyet = 1
+ctr = 0
+maxIter = 10000
+decLimit = round(maxIter/(100*20))
+threshold = round(maxIter/(100*10))
 function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W,nHidden, alist, Blist, maxbatch, wbest,  maxIter,triedDec)
-    global ctr
+    global ctr, decLimit, threshold
     #Get most recent step and batch sizes
     a=alist[end]
     B=Blist[end]
@@ -140,6 +143,7 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
             #go back to best w
             W = wbest
             a = (4/5)*a
+            # a = (4/3)*a
             triedDec = false
         end
 
@@ -147,18 +151,17 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
     #Don't delete, might use later
     #Tries increasing alpha
 
-    # decLimit = 5 #round(maxIter/20)
-    # threshold = 12 #round(maxIter/10)
-    #
-    # if length(validation_array) >= 4 && ((validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end])) || ((mean(validation_array[end-3:end-1]) <= 1.05*validation_array[end]) && (mean(validation_array[end-3:end-1]) >= 0.95*validation_array[end]))
+    # if length(validation_array) >= 4 && (((validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end])) || ((mean(validation_array[end-3:end-1]) <= 1.05*validation_array[end]) && (mean(validation_array[end-3:end-1]) >= 0.95*validation_array[end])))
     #     if ctr <= decLimit
-    #         a = (4/5)*a
-    #         ctr += 1
+    #         a = (3/4)*a
     #         print("case 2 part 1")
     #         print(" Ctr is :",ctr, " ")
-    #     elseif ctr > decLimit && ctr <= threshold
-    #         a = (6/4)*a
     #         ctr += 1
+    #     elseif ctr > decLimit && ctr <= threshold
+    #         a = (10)*a
+    #         # ctr += 1
+    #         ctr = 0
+    #         decLimit += 1
     #         print("case 2 part 2")
     #     elseif ctr > threshold
     #         W = wbest
@@ -168,7 +171,8 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
 
 
     #Case 2: alpha decreases based on validation error
-    elseif length(validation_array) >= 4 && ((validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end]))
+    # elseif length(validation_array) >= 4 && ((validation_array[end-3] < validation_array[end]||validation_array[end-2] < validation_array[end]) && (validation_array[end-1]<validation_array[end]))
+    elseif length(validation_array) >= 4 && validation_array[end-2]>validation_array[end]
         a_adjust = (1 - abs(validation_array[end-2] - validation_array[end])/validation_array[end-2])
         a = a*a_adjust
         print("case 1")
@@ -179,6 +183,22 @@ function BS_Select(;validation_array,f_array, gradcalc::Function,xtrain,ytrain,W
         B=maxbatch
     else
         B=convert(Int64,round(maxbatch*(1/(1+round(exp(-.5/(pi-theta+.00001)),digits=5)))))
+    end
+
+    # if B > maxbatch
+    #     B = maxbatch
+    # elseif B < 1
+    #     B = 1
+    # else
+    #     if round(maxbatch*cos(theta/2)) == NaN
+    #         B = maxbatch
+    #     else
+    #         B = convert(Int64, round(maxbatch*cos(theta/2)))
+    #     end
+    # end
+
+    if a > 1
+        a = 1
     end
     push!(alist,a)
     push!(Blist,B)

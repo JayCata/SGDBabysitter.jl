@@ -26,24 +26,24 @@ maxIter = 10000
 
 #----Uncomment below for hyperparameter search:----#
 
-aTest = [0.1, 0.01, 0.001, 0.0001, 0.00001]
-BTest = [1, 5, 10, 20, 100] #200 500 1000
-
-bestvalid = Inf
-bestw = []
-bestparams = [0,0]
-for B in BTest
-    for a in aTest
-        global bestvalid, bestw, bestparams
-        wb, validerr = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,
-                                    nParams, xtrain, ytrain, xvalid, yvalid, a, B)
-        if (validerr[end]<bestvalid)
-            bestvalid=validerr[end]
-            bestw=wb
-            bestparams = [a,B]
-        end
-    end
-end
+# aTest = [0.1, 0.01, 0.001, 0.0001, 0.00001]
+# BTest = [1, 5, 10, 20, 100] #200 500 1000
+#
+# bestvalid = Inf
+# bestw = []
+# bestparams = [0,0]
+# for B in BTest
+#     for a in aTest
+#         global bestvalid, bestw, bestparams
+#         wb, validerr = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden,
+#                                     nParams, xtrain, ytrain, xvalid, yvalid, a, B)
+#         if (validerr[end]<bestvalid)
+#             bestvalid=validerr[end]
+#             bestw=wb
+#             bestparams = [a,B]
+#         end
+#     end
+# end
 
 #best hyperparams found to be [0.0001, 20] from naive possibilities
 
