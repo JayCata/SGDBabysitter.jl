@@ -45,9 +45,11 @@ maxIter = 10000
 #     end
 # end
 
-#best hyperparams found to be [0.0001, 20] from naive possibilities
+#best hyperparams found to be [0.0001, 20]
 
 wbSGDB, validSGDB = SGDBabysitter(NeuralNet_backprop, NeuralNet_predict,
 maxIter, nHidden, nParams, xtrain, ytrain, xvalid, yvalid)
+savefig("SGDB_MNIST.pdf")
 
 wbVan, validVan = VanillaSGD(NeuralNet_backprop, NeuralNet_predict, maxIter, nHidden, nParams, xtrain, ytrain, xvalid, yvalid, bestparams[1], convert(Int64, bestparams[2]))
+savefig("Vanilla_MNIST.pdf")

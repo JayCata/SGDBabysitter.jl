@@ -26,7 +26,7 @@ function VanillaSGD(gradcalc::Function, nn_predict::Function, maxIter, nHidden,n
             end
         end
     end
-    display(plot(1:length(valid), valid))
+    display(plot(1:length(valid), valid, xlabel="Number of Iterations", ylabel="Validation Error", legend=false))
     return wbest, vallow
 end
 
@@ -69,7 +69,7 @@ function SGDBabysitter(gradcalc::Function, nn_predict::Function, maxIter, nHidde
           end
     end
 
-    display(plot(1:length(valid), valid))
+    display(plot(1:length(valid), valid, xlabel="Number of Iterations", ylabel="Validation Error", legend=false))
 
     return wbest, vallow
 end

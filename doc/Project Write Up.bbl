@@ -1,17 +1,3 @@
 \begin{thebibliography}{}
 
-\bibitem[Bottou, ]{Bottou}
-Bottou, L.
-\newblock {Stochastic Gradient Learning in Neural Networks}.
-
-\bibitem[Loshchilov and Hutter, 2016]{DBLP:journals/corr/LoshchilovH16a}
-Loshchilov, I. and Hutter, F. (2016).
-\newblock {{\{}SGDR:{\}} Stochastic Gradient Descent with Restarts}.
-\newblock {\em CoRR}, abs/1608.03983.
-
-\bibitem[Ruder, 2016]{DBLP:journals/corr/Ruder16}
-Ruder, S. (2016).
-\newblock {An overview of gradient descent optimization algorithms}.
-\newblock {\em CoRR}, abs/1609.04747.
-
 \end{thebibliography}
