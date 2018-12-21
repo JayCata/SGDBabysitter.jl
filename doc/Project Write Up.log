@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.11.24)  22 DEC 2018 02:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.11.24)  22 DEC 2018 03:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -763,77 +763,71 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 80.
+(Font)              <10> on input line 83.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 80.
-
-Underfull \hbox (badness 10000) in paragraph at lines 89--91
+(Font)              <7> on input line 83.
+ [3]
+Underfull \hbox (badness 10000) in paragraph at lines 92--94
 
  []
 
-<../figs/Vanilla_MNIST.pdf, id=58, 602.25pt x 401.5pt>
+<../figs/Vanilla_MNIST.pdf, id=65, 602.25pt x 401.5pt>
 File: ../figs/Vanilla_MNIST.pdf Graphic file (type pdf)
 <use ../figs/Vanilla_MNIST.pdf>
-Package pdftex.def Info: ../figs/Vanilla_MNIST.pdf  used on input line 100.
+Package pdftex.def Info: ../figs/Vanilla_MNIST.pdf  used on input line 103.
 (pdftex.def)             Requested size: 156.49014pt x 104.32626pt.
-<../figs/SGDB_MNIST.pdf, id=59, 602.25pt x 401.5pt>
+<../figs/SGDB_MNIST.pdf, id=66, 602.25pt x 401.5pt>
 File: ../figs/SGDB_MNIST.pdf Graphic file (type pdf)
 <use ../figs/SGDB_MNIST.pdf>
-Package pdftex.def Info: ../figs/SGDB_MNIST.pdf  used on input line 102.
+Package pdftex.def Info: ../figs/SGDB_MNIST.pdf  used on input line 105.
 (pdftex.def)             Requested size: 156.49014pt x 104.32626pt.
-[3]
-<../figs/Vanilla_Parkinsons.pdf, id=68, 602.25pt x 401.5pt>
+[4]
+<../figs/Vanilla_Parkinsons.pdf, id=72, 602.25pt x 401.5pt>
 File: ../figs/Vanilla_Parkinsons.pdf Graphic file (type pdf)
 <use ../figs/Vanilla_Parkinsons.pdf>
-Package pdftex.def Info: ../figs/Vanilla_Parkinsons.pdf  used on input line 111
+Package pdftex.def Info: ../figs/Vanilla_Parkinsons.pdf  used on input line 114
 .
 (pdftex.def)             Requested size: 156.49014pt x 104.32626pt.
-<../figs/SGDB_Parkinsons.pdf, id=69, 602.25pt x 401.5pt>
+<../figs/SGDB_Parkinsons.pdf, id=73, 602.25pt x 401.5pt>
 File: ../figs/SGDB_Parkinsons.pdf Graphic file (type pdf)
 <use ../figs/SGDB_Parkinsons.pdf>
-Package pdftex.def Info: ../figs/SGDB_Parkinsons.pdf  used on input line 113.
+Package pdftex.def Info: ../figs/SGDB_Parkinsons.pdf  used on input line 116.
 (pdftex.def)             Requested size: 156.49014pt x 104.32626pt.
-
-Overfull \hbox (4.05898pt too wide) in paragraph at lines 108--116
-[]\T1/lmr/m/n/10 (-20) Next, we em-ployed the Ox-ford Parkin-son's Dis-ease Tel
-e-mon-i-tor-ing dataset[cite].
- []
-
-<../figs/Vanilla_Concrete.pdf, id=70, 602.25pt x 401.5pt>
+<../figs/Vanilla_Concrete.pdf, id=74, 602.25pt x 401.5pt>
 File: ../figs/Vanilla_Concrete.pdf Graphic file (type pdf)
 <use ../figs/Vanilla_Concrete.pdf>
-Package pdftex.def Info: ../figs/Vanilla_Concrete.pdf  used on input line 122.
+Package pdftex.def Info: ../figs/Vanilla_Concrete.pdf  used on input line 125.
 (pdftex.def)             Requested size: 156.49014pt x 104.32626pt.
-<../figs/SGDB_Concrete.pdf, id=71, 602.25pt x 401.5pt>
+<../figs/SGDB_Concrete.pdf, id=75, 602.25pt x 401.5pt>
 File: ../figs/SGDB_Concrete.pdf Graphic file (type pdf)
 <use ../figs/SGDB_Concrete.pdf>
-Package pdftex.def Info: ../figs/SGDB_Concrete.pdf  used on input line 124.
+Package pdftex.def Info: ../figs/SGDB_Concrete.pdf  used on input line 127.
 (pdftex.def)             Requested size: 156.49014pt x 104.32626pt.
-[4 <../figs/Vanilla_MNIST.pdf> <../figs/SGDB_MNIST.pdf> <../figs/Vanilla_Parkin
-sons.pdf> <../figs/SGDB_Parkinsons.pdf>] [5 <../figs/Vanilla_Concrete.pdf> <../
-figs/SGDB_Concrete.pdf>] (./Project Write Up.bbl
+ [5 <../figs/Vanilla_MNIST.pdf> <../figs/SGDB_MNIST.pdf> <../figs/Vanilla_Parki
+nsons.pdf> <../figs/SGDB_Parkinsons.pdf>] [6 <../figs/Vanilla_Concrete.pdf> <..
+/figs/SGDB_Concrete.pdf>] (./Project Write Up.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 150.
- [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 150.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 153.
+ [7]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 153.
  (./Project Write Up.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 150.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 150.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 153.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 153.
 Package rerunfilecheck Info: File `"Project Write Up".out' has not changed.
 (rerunfilecheck)             Checksum: 725ED5B2713F8D69A8900D7C44477BC1;483.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 150.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 153.
  ) 
 Here is how much of TeX's memory you used:
- 8801 strings out of 494847
- 137802 string characters out of 6179079
+ 8808 strings out of 494847
+ 137872 string characters out of 6179079
  247818 words of memory out of 5000000
  11862 multiletter control sequences out of 15000+600000
- 66735 words of font info for 109 fonts, out of 8000000 for 9000
+ 66984 words of font info for 112 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 44i,12n,51p,890b,421s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,12n,51p,1340b,421s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dv
 ips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share
 /texmf/fonts/enc/dvips/lm/lm-mathit.enc}</usr/share/texmf/fonts/type1/public/lm
@@ -845,10 +839,10 @@ usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/p
 ublic/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/
 texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lm
 sy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb>
-Output written on "Project Write Up.pdf" (6 pages, 259516 bytes).
+Output written on "Project Write Up.pdf" (7 pages, 261815 bytes).
 PDF statistics:
- 168 PDF objects out of 1000 (max. 8388607)
- 139 compressed objects within 2 object streams
- 26 named destinations out of 1000 (max. 500000)
+ 174 PDF objects out of 1000 (max. 8388607)
+ 144 compressed objects within 2 object streams
+ 27 named destinations out of 1000 (max. 500000)
  21095 words of extra memory for PDF output out of 24883 (max. 10000000)
 

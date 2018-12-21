@@ -60,6 +60,9 @@ As we learned in class, Stochastic Gradient Descent (SGD) is a popular optimizat
 \par Making a more accurate implementation of stochastic gradient descent is important because it could be used to fit more accurate machine learning models. Since many academic disciplines and the private sector use SGD to fit machine learning models, a more accurate implementation could improve the performance of prediction in all types of applications. This implementation also has the benefit that it does not require `babysitting' to obtain low validation errors - resulting in less investment of time and knowledge from the end user. 
 
 \section{Related Work}
+\par A lot of work has been done to improve gradient descent optimization algorithms for minimizing neural network loss functions. SGD with mini-batches combines fast optimization characteristic of SGD with the lower variance of regular batch gradient descent by computing the gradient for a fixed subset of the training examples (usually under 512 at a time)[1]. However, this requires selection of the appropriate learning rate and batch size for the given dataset, which is a non-trivial task to say the least. Our algorithm takes on the task of selecting these hyperparameters for the end user.  In comparison, algorithms that attempt to reduce the learning rate[2] to `anneal' closer to the minima can obtain better estimates of the best set of parameters. However, since loss functions in neural networks are, in general, non-convex, this often lead to minima that are not ideal since the gradient descent algorithm is still going down a single path. SGD with restarts[3] addresses this problem by suddenly increasing the learning rate after decreasing gradually in order to allow the algorithm to `jump' out of bad local minima and saddle points[4] and find better minima. However, this too requires prior selection of the learning rate schedule, and makes no attempt to select appropriate mini-batch sizes. 
+\par We have tried to address the limitations of these methods by creating a dynamic simultaneous learning rate and mini-batch size schedule which selects these hyperparameters on the basis of validation error, while also allowing for restarts when the error stagnates. 
+\par However, many more algorithms exist that address the limitations of the aforementioned methods by different means. Algorithms such as Nesterov accelerated gradient, Adagrad, RMSprop, Adam, etc. use information about previous gradients and different learning rates for individual parameters, and have been found to work particularly well will neural networks and sparse data[5]. 
 
 
 \section{SGDBabysitter} 
@@ -92,9 +95,9 @@ To further test our algorithm, we comapred it to a vanilla implementation of min
 %\begin{flushleft}
 \textbf{MNIST Data Set}
 %\end{flushleft}
-\par On the MNIST database of handwritten digits[cite], 
+\par On the MNIST database of handwritten digits[6], 
 %we employed a neural network with 4 four hidden layers of size $ 3, 3, 4, $ and $ 3 $ respectively. 
-we consistently performed better than the vanilla implementation. Plots of sum of squared validation errors versus SGD iterations shows the performance of the two algorithms. Whereas regular SGD seems to consistently find the same local minimum, our algorithm is able to find a better minimum, and that too faster. Although our algorithm encourages looking for a better minimum when the validation error is stagnating, it is unable to find one from iteration $ 25 $ onwards. On other runs, we found that the vanilla implementation consistently plateaued at similar validation errors, however, our implementation mostly found the minimum with the sum of squared errors of $ 4 $. We further ensured that we were not converging to a saddle point, a known issue with SGD algorithms that do not employ a momentum-like term[cite], by looking at the resulting predictions.
+we consistently performed better than the vanilla implementation. Plots of sum of squared validation errors versus SGD iterations shows the performance of the two algorithms. Whereas regular SGD seems to consistently find the same local minimum, our algorithm is able to find a better minimum, and that too faster. Although our algorithm encourages looking for a better minimum when the validation error is stagnating, it is unable to find one from iteration $ 25 $ onwards. On other runs, we found that the vanilla implementation consistently plateaued at similar validation errors, however, our implementation mostly found the minimum with the sum of squared errors of $ 4 $. We further ensured that we were not converging to a saddle point, a known issue with SGD algorithms that do not employ a momentum-like term[4], by looking at the resulting predictions.
 \begin{figure}[H]
 	\centering
 	\subfloat[VanillaSGD]{{\includegraphics[width=5.5cm]{../figs/Vanilla_MNIST.pdf} }}%
@@ -105,7 +108,7 @@ we consistently performed better than the vanilla implementation. Plots of sum o
 \end{figure}
 
 \textbf{Parkinsons Telemonitoring Data Set}
-\par Next, we employed the Oxford Parkinson's Disease Telemonitoring dataset[cite]. We found similar validation errors for both the vanilla and babysitter implementations.
+\par Next, we employed the Oxford Parkinson's Disease Telemonitoring dataset[7]. We found similar validation errors for both the vanilla and babysitter implementations.
 \begin{figure}[H]
 	\centering
 	\subfloat[VanillaSGD]{{\includegraphics[width=5.5cm]{../figs/Vanilla_Parkinsons.pdf} }}%
@@ -116,7 +119,7 @@ we consistently performed better than the vanilla implementation. Plots of sum o
 \end{figure}
 
 \textbf{Concrete Compressive Strength Data Set}
-\par This dataset[cite] aims to predict the compressive strength of concrete -  a highly non-linear function of various features - which is an important quantity for civil engineering applications. Based on our tests, we again found that SGDBabysitter and the vanilla implementation both consistently found the same minimum. 
+\par This dataset[8] aims to predict the compressive strength of concrete -  a highly non-linear function of various features - which is an important quantity for civil engineering applications. Based on our tests, we again found that SGDBabysitter and the vanilla implementation both consistently found the same minimum. 
 \begin{figure}[H]
 	\centering
 	\subfloat[VanillaSGD]{{\includegraphics[width=5.5cm]{../figs/Vanilla_Concrete.pdf} }}%
