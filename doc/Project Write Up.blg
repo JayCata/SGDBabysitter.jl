@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/W32TeX)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: Project Write Up.aux
+The style file: apalike.bst
+Database file #1: SGDbib.bib
+Warning--empty year in Bottou
+Warning--empty journal in Bottou
+You've used 3 entries,
+            1935 wiz_defined-function locations,
+            487 strings with 4081 characters,
+and the built_in function-call counts, 868 in all, are:
+= -- 82
+> -- 27
+< -- 3
++ -- 8
+- -- 8
+* -- 58
+:= -- 168
+add.period$ -- 8
+call.type$ -- 3
+change.case$ -- 19
+chr.to.int$ -- 3
+cite$ -- 5
+duplicate$ -- 39
+empty$ -- 61
+format.name$ -- 13
+if$ -- 162
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 3
+newline$ -- 17
+num.names$ -- 9
+pop$ -- 16
+preamble$ -- 1
+purify$ -- 19
+quote$ -- 0
+skip$ -- 34
+stack$ -- 0
+substring$ -- 36
+swap$ -- 2
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 18
+warning$ -- 2
+while$ -- 6
+width$ -- 0
+write$ -- 37
+(There were 2 warnings)
