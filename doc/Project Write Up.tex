@@ -142,7 +142,7 @@ we consistently performed better than the vanilla implementation. Plots of sum o
 \section{Conclusions}
 \par Based on the results above, our SGD babysitter generally provides performance better than vanilla mini-batch SGD. No time investment is required to find the ideal hyperparameters which can significantly reduce computation costs when using large datasets, and our initialization method gets us closer to minima much faster on all datasets. Further, reduced reliance on the end user for hyperparameter selection makes SGD babysitter comparatively easier to use and more robust over a wide range of applications. 
 
-\par However, we do not feel that our limited testing is sufficient to conclusively show that our algorithm is objectively better. Further testing and logic improvements are required to make our algorithm an improvement over the vanilla implementation, which is abundantly used to this day. We do plan to continue working on our algorithm in the coming term.
+\par However, we do not feel that our limited testing is sufficient to conclusively show that our algorithm is objectively better. Further testing and logic improvements are required to make our algorithm an improvement over the vanilla implementation, which is abundantly used to this day. One strength of our implementation is that it relies on the theory in a very clear way and produces reasonably accurate results. Our implementation, however, is not currently general enough to train other neural network implementations or other models. If we have more time, we would make it work for a more general set of models and we would also fine tune the logic a little more and test out certain cutoffs we are using in the code. 
  
 \newpage
 \section{References}
